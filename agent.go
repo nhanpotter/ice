@@ -1110,6 +1110,7 @@ func (a *Agent) validateNonSTUNTraffic(local Candidate, remote net.Addr) bool {
 	if err := a.run(a.context(), func(ctx context.Context, agent *Agent) {
 		remoteCandidate := a.findRemoteCandidate(local.NetworkType(), remote)
 		if remoteCandidate != nil {
+			a.log.Tracef("validateNonSTUNTraffic: remoteCandidate %s seen false", remoteCandidate.String())
 			remoteCandidate.seen(false)
 			atomic.AddUint64(&isValidCandidate, 1)
 		}
