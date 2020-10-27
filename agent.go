@@ -700,7 +700,10 @@ func (a *Agent) checkKeepalive() {
 			(time.Since(selectedPair.remote.LastReceived()) > a.keepaliveInterval)) {
 		// we use binding request instead of indication to support refresh consent schemas
 		// see https://tools.ietf.org/html/rfc7675
-		a.log.Tracef("checkKeepalive: ping STUN from %s to %s", selectedPair.local.String(), selectedPair.remote.String())
+		a.log.Tracef("checkKeepalive: reason lastSent:%v lastReceived:%v, ping STUN from %s to %s",
+			time.Since(selectedPair.local.LastSent()) > a.keepaliveInterval,
+			time.Since(selectedPair.remote.LastReceived()) > a.keepaliveInterval,
+			selectedPair.local.String(), selectedPair.remote.String())
 		a.selector.PingCandidate(selectedPair.local, selectedPair.remote)
 	}
 }
