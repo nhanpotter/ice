@@ -1023,6 +1023,8 @@ func (a *Agent) handleInbound(m *stun.Message, local Candidate, remote net.Addr)
 		return
 	}
 
+	a.log.Tracef("handleInbound: local(%s) remote(%s)", local.String(), remote.String())
+
 	if m.Type.Method != stun.MethodBinding ||
 		!(m.Type.Class == stun.ClassSuccessResponse ||
 			m.Type.Class == stun.ClassRequest ||
