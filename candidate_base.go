@@ -220,10 +220,11 @@ func (c *candidateBase) recvLoop(initializedCh <-chan struct{}) {
 	buffer := make([]byte, receiveMTU)
 	for {
 		n, srcAddr, err := c.conn.ReadFrom(buffer)
-		log.Tracef("recvLoop srcAddr(%s) err(%v)", srcAddr.String(), err)
 		if err != nil {
+			log.Errorf("recvLoop err(%v)", err)
 			return
 		}
+		log.Tracef("recvLoop srcAddr(%s)", srcAddr.String())
 
 		handleInboundCandidateMsg(c, c, buffer[:n], srcAddr, log)
 	}
