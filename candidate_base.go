@@ -220,6 +220,7 @@ func (c *candidateBase) recvLoop(initializedCh <-chan struct{}) {
 	buffer := make([]byte, receiveMTU)
 	for {
 		n, srcAddr, err := c.conn.ReadFrom(buffer)
+		log.Tracef("recvLoop srcAddr(%s) err(%v)", srcAddr.String(), err)
 		if err != nil {
 			return
 		}
