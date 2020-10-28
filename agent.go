@@ -776,6 +776,10 @@ func (a *Agent) checkKeepalive() {
 		(time.Since(selectedPair.local.LastSent()) > a.keepaliveInterval) {
 		// we use binding request instead of indication to support refresh consent schemas
 		// see https://tools.ietf.org/html/rfc7675
+		a.log.Tracef("checkKeepalive: reason lastSent:%v lastReceived:%v, ping STUN from %s to %s",
+			time.Since(selectedPair.local.LastSent()) > a.keepaliveInterval,
+			time.Since(selectedPair.remote.LastReceived()) > a.keepaliveInterval,
+			selectedPair.local.String(), selectedPair.remote.String())
 		a.selector.PingCandidate(selectedPair.local, selectedPair.remote)
 	}
 }
@@ -1135,6 +1139,7 @@ func (a *Agent) handleInbound(m *stun.Message, local Candidate, remote net.Addr)
 	}
 
 	if remoteCandidate != nil {
+		a.log.Tracef("handleInbound: remoteCandidate %s seen false", remoteCandidate.String())
 		remoteCandidate.seen(false)
 	}
 }
@@ -1146,6 +1151,7 @@ func (a *Agent) validateNonSTUNTraffic(local Candidate, remote net.Addr) bool {
 	if err := a.run(func(agent *Agent) {
 		remoteCandidate := a.findRemoteCandidate(local.NetworkType(), remote)
 		if remoteCandidate != nil {
+			a.log.Tracef("validateNonSTUNTraffic: remoteCandidate %s seen false", remoteCandidate.String())
 			remoteCandidate.seen(false)
 			atomic.AddUint64(&isValidCandidate, 1)
 		}

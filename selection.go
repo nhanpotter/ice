@@ -73,7 +73,9 @@ func (s *controllingSelector) ContactCandidates() {
 	switch {
 	case s.agent.getSelectedPair() != nil:
 		if s.agent.validateSelectedPair() {
-			s.log.Trace("checking keepalive")
+			selectedPair := s.agent.getSelectedPair()
+			s.log.Tracef("checking keepalive local:%s remote:%s",
+				selectedPair.local.String(), selectedPair.remote.String())
 			s.agent.checkKeepalive()
 		}
 	case s.nominatedPair != nil:
@@ -205,7 +207,9 @@ func (s *controlledSelector) Start() {
 func (s *controlledSelector) ContactCandidates() {
 	if s.agent.getSelectedPair() != nil {
 		if s.agent.validateSelectedPair() {
-			s.log.Trace("checking keepalive")
+			selectedPair := s.agent.getSelectedPair()
+			s.log.Tracef("checking keepalive local:%s remote:%s",
+				selectedPair.local.String(), selectedPair.remote.String())
 			s.agent.checkKeepalive()
 		}
 	} else {
