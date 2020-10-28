@@ -88,7 +88,7 @@ func (p *candidatePair) Write(b []byte) (int, error) {
 
 func (a *Agent) sendSTUN(msg *stun.Message, local, remote Candidate) {
 	_, err := local.writeTo(msg.Raw, remote)
-	a.log.Tracef("sendSTUN: remote(%s)", remote.String())
+	a.log.Tracef("sendSTUN: remote(%s) err(%v)", remote.String(), err)
 	if err != nil {
 		a.log.Tracef("failed to send STUN message: %s", err)
 	}
