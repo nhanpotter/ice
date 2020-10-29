@@ -756,8 +756,8 @@ func (a *Agent) validateSelectedPair() bool {
 	lastReceived := selectedPair.remote.LastReceived()
 	if (a.connectionTimeout != 0) &&
 		(time.Since(lastReceived) > a.connectionTimeout) {
-		a.log.Tracef("lastReceived(%v) connection state change to disconnected",
-			lastReceived)
+		a.log.Tracef("remote(%v) lastReceived(%v) connection state change to disconnected",
+			selectedPair.remote.String(), lastReceived)
 		a.setSelectedPair(nil)
 		a.updateConnectionState(ConnectionStateDisconnected)
 		return false
