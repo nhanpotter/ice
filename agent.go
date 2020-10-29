@@ -666,7 +666,8 @@ func (a *Agent) validateSelectedPair() bool {
 		return false
 	}
 
-	disconnectedTime := time.Since(selectedPair.remote.LastReceived())
+	lastReceived := selectedPair.remote.LastReceived()
+	disconnectedTime := time.Since(lastReceived)
 
 	// Only allow transitions to failed if a.failedTimeout is non-zero
 	totalTimeToFailure := a.failedTimeout
@@ -678,6 +679,8 @@ func (a *Agent) validateSelectedPair() bool {
 	case totalTimeToFailure != 0 && disconnectedTime > totalTimeToFailure:
 		a.updateConnectionState(ConnectionStateFailed)
 	case a.disconnectedTimeout != 0 && disconnectedTime > a.disconnectedTimeout:
+		a.log.Tracef("remote(%s) lastReceived(%v) connection state change to disconnected",
+			selectedPair.remote.String(), lastReceived)
 		a.updateConnectionState(ConnectionStateDisconnected)
 	default:
 		a.updateConnectionState(ConnectionStateConnected)
