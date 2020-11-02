@@ -224,7 +224,6 @@ func (c *candidateBase) recvLoop(initializedCh <-chan struct{}) {
 			log.Errorf("recvLoop err(%v)", err)
 			return
 		}
-		log.Tracef("recvLoop srcAddr(%s)", srcAddr.String())
 
 		handleInboundCandidateMsg(c, c, buffer[:n], srcAddr, log)
 	}
