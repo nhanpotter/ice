@@ -75,6 +75,7 @@ func (a *Agent) GatherCandidates() error {
 }
 
 func (a *Agent) gatherCandidates() <-chan struct{} {
+	a.log.Tracef("gatherCandidates called")
 	gatherStateUpdated := make(chan bool)
 
 	a.chanCandidate = make(chan Candidate, 1)
